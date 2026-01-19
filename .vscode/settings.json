@@ -1,0 +1,14 @@
+{
+  "git.ignoreLimitWarning": true,
+
+  "tailwindCSS.root": "./frontend",
+
+  "tailwindCSS.experimental.classRegex": [
+    ["className\\s*=\\s*\"([^\"]*)\"", 1],
+    ["className\\s*=\\s*'([^']*)'", 1]
+  ],
+
+  "tailwindCSS.files.include": [
+    "frontend/**/*.{js,jsx,ts,tsx,html}"
+  ]
+}
