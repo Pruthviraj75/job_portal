@@ -51,8 +51,7 @@ function App() {
 
     {
       path: '/admin/companies',
-      // element: <ProtectedRoute><Companies /></ProtectedRoute> 
-      element:<Companies />
+      element: <ProtectedRoute><Companies /></ProtectedRoute> 
     },
     {
       path: '/admin/companies/create',
