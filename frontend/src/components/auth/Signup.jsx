@@ -19,7 +19,7 @@ const Signup = () => {
     phoneNumber: "",
     password: "",
     role: "",
-    file: null,
+    avatar: null,
   });
 
   const { loading, user } = useSelector((store) => store.auth);
@@ -31,7 +31,7 @@ const Signup = () => {
   };
 
   const changeFileHandler = (e) => {
-    setInput({ ...input, file: e.target.files?.[0] });
+    setInput({ ...input, avatar: e.target.files?.[0] });
   };
 
   const submitHandler = async (e) => {

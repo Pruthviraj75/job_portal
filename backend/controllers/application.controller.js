@@ -1,6 +1,7 @@
 import { Application } from "../models/application.model.js";
 import { Job } from "../models/job.model.js";
-
+import {User} from "../models/user.model.js";
+import { sendMailApplication } from "../utils/sendMail.js";
 
 
 export const applyJob = async (req, res) => {
@@ -10,42 +11,67 @@ export const applyJob = async (req, res) => {
     if(!jobId) {
         return res.status(400).json({
             message: "Job ID is required.",
-            success: false
+            success: false,
         })
     }
     // Check the user has already apply for the job
-    const existingApplication = await Application.findOne({job: jobId, applicant: userId});
+    const existingApplication = await Application.findOne({
+        job: jobId, 
+        applicant: userId
+    });
+
     if(existingApplication) {
         return res.status(400).json({
             message: "You have already applied for this job.",
-            success: false
+            success: false,
         });
     }
     
-    //check if the job exists
-    const job = await Job.findById(jobId);
+    //check job exists
+    const job = await Job.findById(jobId).populate('company');
     if(!job) {
         return res.status(404).json({
             message: "Job not found.",
-            success: false
-        })
+            success: false,
+        });
+    }
+
+    //get user details for sending mail
+    const user = await User.findById(userId);
+    if(!user) {
+        return res.status(404).json({
+            message: "User not found.",
+            success: false,
+        });
     }
 
     //create a new application
     const newApplication = await Application.create({
         job: jobId,
-        applicant: userId
+        applicant: userId,
     });
 
     job.applications.push(newApplication._id);
     await job.save();
+
+    await sendMailApplication({
+        to: user.email,
+        userName: user.fullname || user.name,
+        jobTitle: job.title,
+        companyName: job.company.name,
+    });
+
     return res.status(201).json({
-        message: "Job Applied successfully.",
+        message: "Application submitted successfully. A confirmation email has been sent.",
         success: true,
     })
 
    } catch (error) {
     console.log(error);
+    return res.status(500).json({
+        message: "Something went wrong.",
+        success: false,
+    });
    }
 }
 
@@ -84,7 +110,7 @@ export const getApplicants = async (req, res) => {
             options: { sort: { createdAt: -1}},
             populate: {
                 path: 'applicant',
-                // options: { sort: { createdAt: -1}}
+                options: { sort: { createdAt: -1}}
             }
         })
         if(!job) {

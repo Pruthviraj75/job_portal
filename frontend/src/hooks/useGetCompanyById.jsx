@@ -7,17 +7,24 @@ import { useDispatch } from "react-redux";
 import { setSingleCompany } from "../redux/companySlice";
 
 const useGetCompanyById = (companyId) => {
-    const dispatch = useDispatch()
+  const dispatch = useDispatch();
+
   useEffect(() => {
     const fetchSingleCompany = async () => {
       try {
         const res = await axios.get(
           `${COMPANY_API_ENDPOINT}/get/${companyId}`,
-          { withCredentials: true }
+          { withCredentials: true },
         );
         if (res.data.success) {
-            dispatch(setSingleCompany(res.data.company))//let see what error would be occured
-            toast.success(res.data.message);
+          dispatch(
+            setSingleCompany({
+              ...res.data.company,
+              jobsCount: res.data.jobsCount,
+              applicantsCount: res.data.applicantsCount,
+            }),
+          );
+          toast.success(res.data.message);
         }
       } catch (error) {
         console.log(error);

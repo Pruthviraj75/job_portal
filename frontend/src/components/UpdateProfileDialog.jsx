@@ -17,162 +17,154 @@ import { setUser } from "../redux/authSlice";
 import { toast } from "sonner";
 
 const UpdateProfileDialog = ({ open, setOpen }) => {
-  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
   const { user } = useSelector((store) => store.auth);
+
+  const [loading, setLoading] = useState(false);
+  const [avatarPreview, setAvatarPreview] = useState(
+    user?.profile?.avatar || ""
+  );
 
   const [input, setInput] = useState({
     fullname: user?.fullname || "",
     email: user?.email || "",
     phoneNumber: user?.phoneNumber || "",
     bio: user?.profile?.bio || "",
-    skills: user?.profile?.skills?.map(skill => skill) || "",
-    file: user?.profile?.resume || "",
+    skills: user?.profile?.skills?.join(", ") || "",
+    avatar: null,
   });
 
-  const dispatch = useDispatch();
+  /* ------------------ TEXT INPUT ------------------ */
   const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
 
-  const fileChangeHandler = (e) => {
-    const file = e.target.files?.[0];
-    setInput({ ...input, file });
+  /* ------------------ FILE SELECT ------------------ */
+  const handleFile = (file) => {
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      toast.error("Only images allowed");
+      return;
+    }
+
+    setInput({ ...input, avatar: file });
+
+    const reader = new FileReader();
+    reader.onload = () => setAvatarPreview(reader.result);
+    reader.readAsDataURL(file);
   };
 
+  /* ------------------ DRAG DROP ------------------ */
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    handleFile(file);
+  };
+
+  /* ------------------ SUBMIT ------------------ */
   const submitHandler = async (e) => {
     e.preventDefault();
+
     const formData = new FormData();
     formData.append("fullname", input.fullname);
     formData.append("email", input.email);
     formData.append("phoneNumber", input.phoneNumber);
     formData.append("bio", input.bio);
     formData.append("skills", input.skills);
-    if (input.file) {
-      formData.append("file", input.file);
+
+    if (input.avatar) {
+      formData.append("avatar", input.avatar); 
     }
 
     try {
-      setLoading(true)
+      setLoading(true);
+
       const res = await axios.post(
         `${USER_API_ENDPOINT}/profile/update`,
-         formData ,
+        formData,
         { withCredentials: true }
       );
+
       if (res.data.success) {
         dispatch(setUser(res.data.user));
-        toast.success(res.data.message);
+        toast.success("Profile updated successfully 🎉");
+        setOpen(false);
       }
-    } catch (error) {
-      console.log(error);
-      toast.error(error.response.data.message);
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Update failed");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-    setOpen(false);
   };
+
   return (
-    <div>
-      <Dialog open={open}>
-        <DialogContent
-          className="sm:max-w-106.25"
-          onInteractOutside={() => setOpen(false)}
-        >
-          <DialogHeader>
-            <DialogTitle>Update Profile</DialogTitle>
-          </DialogHeader>
-          <form onSubmit={submitHandler}>
-            <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="fullname" className="text-right">
-                  Name
-                </Label>
-                <Input
-                  id="fullname"
-                  name="fullname"
-                  type="text"
-                  value={input.fullname}
-                  onChange={changeEventHandler}
-                  className="col-span-3"
-                />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="email" className="text-right">
-                  Email
-                </Label>
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  value={input.email}
-                  onChange={changeEventHandler}
-                  className="col-span-3"
-                />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="phoneNumber" className="text-right">
-                  Number
-                </Label>
-                <Input
-                  id="phoneNumber"
-                  name="phoneNumber"
-                  value={input.phoneNumber}
-                  onChange={changeEventHandler}
-                  className="col-span-3"
-                />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="bio" className="text-right">
-                  Bio
-                </Label>
-                <Input
-                  id="bio"
-                  name="bio"
-                  value={input.bio}
-                  onChange={changeEventHandler}
-                  className="col-span-3"
-                />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="skills" className="text-right">
-                  Skills
-                </Label>
-                <Input
-                  id="skills"
-                  name="skills"
-                  value={input.skills}
-                  onChange={changeEventHandler}
-                  className="col-span-3"
-                />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="file" className="text-right">
-                  Resume
-                </Label>
-                <Input
-                  id="file"
-                  name="file"
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogContent className="sm:max-w-125">
+        <DialogHeader>
+          <DialogTitle>Update Profile</DialogTitle>
+        </DialogHeader>
+
+        <form onSubmit={submitHandler}>
+          <div className="grid gap-4 py-4">
+
+            {/* ---------- PHOTO DRAG DROP ---------- */}
+            <div className="flex flex-col items-center gap-3">
+              <Label className="font-semibold">Profile Photo</Label>
+
+              <label
+                onDragOver={(e) => e.preventDefault()}
+                onDrop={handleDrop}
+                className="w-32 h-32 rounded-full border-2 border-dashed cursor-pointer flex items-center justify-center overflow-hidden"
+              >
+                {avatarPreview ? (
+                  <img
+                    src={avatarPreview}
+                    alt="avatar"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <span className="text-sm text-gray-400">Drop / Click</span>
+                )}
+
+                <input
                   type="file"
-                  accept="application/pdf"
-                  onChange={fileChangeHandler}
-                  className="col-span-3"
+                  hidden
+                  accept="image/*"
+                  onChange={(e) => handleFile(e.target.files[0])}
                 />
-              </div>
+              </label>
             </div>
-            <DialogFooter>
-              {loading ? (
-                <Button className="w-full my-4">
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please Wait
-                </Button>
-              ) : (
-                <Button type="submit" className="w-full my-4">
-                  Update
-                </Button>
-              )}
-            </DialogFooter>
-          </form>
-        </DialogContent>
-      </Dialog>
-    </div>
+
+            {/* ---------- FIELDS ---------- */}
+
+            <Input name="fullname" value={input.fullname} onChange={changeEventHandler} placeholder="Full Name *" required />
+
+            <Input name="email" type="email" value={input.email} onChange={changeEventHandler} placeholder="Email *" required />
+
+            <Input name="phoneNumber" value={input.phoneNumber} onChange={changeEventHandler} placeholder="Phone Number" />
+
+            <Input name="bio" value={input.bio} onChange={changeEventHandler} placeholder="Bio" />
+
+            <Input name="skills" value={input.skills} onChange={changeEventHandler} placeholder="Skills (comma separated)" />
+
+          </div>
+
+          <DialogFooter>
+            {loading ? (
+              <Button className="w-full">
+                <Loader2 className="animate-spin mr-2 h-4 w-4" />
+                Updating...
+              </Button>
+            ) : (
+              <Button type="submit" className="w-full">
+                Update Profile
+              </Button>
+            )}
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
   );
 };
 

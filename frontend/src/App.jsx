@@ -14,6 +14,7 @@ import AdminJobs from './components/admin/AdminJobs'
 import PostJob from './components/admin/PostJob'
 import Applicants from './components/admin/Applicants'
 import ProtectedRoute from './components/admin/ProtectedRoute'
+import CompanyDetails from './components/admin/CompanyDetails'
 
 
 function App() {
@@ -62,17 +63,21 @@ function App() {
       element: <ProtectedRoute><CompanySetup/></ProtectedRoute> 
     },
     {
+      path: '/admin/companies/:id/details',
+      element: <ProtectedRoute><CompanyDetails /></ProtectedRoute>
+    },
+    {
       path: '/admin/jobs',
       element: <ProtectedRoute><AdminJobs /></ProtectedRoute> 
     },
     {
-      path: '/admin/jobs/create',
+      path: '/admin/jobs/:id',
       element: <ProtectedRoute><PostJob /></ProtectedRoute> 
     },
     {
       path: '/admin/jobs/:id/applicants',
       element: <ProtectedRoute><Applicants /></ProtectedRoute> 
-    }
+    },
   ])
 
   return (
