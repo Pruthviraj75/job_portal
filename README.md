@@ -1,7 +1,3 @@
-<!-- ===================================================== -->
-<!--                PROFESSIONAL BANNER HEADER             -->
-<!-- ===================================================== -->
-
 <h1 align="center">💼 Job Portal – MERN Stack Application</h1>
 
 <p align="center">
