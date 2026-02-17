@@ -24,14 +24,17 @@ A modern full-stack job portal where recruiters post jobs and candidates apply s
 
 # 🚀 Live Demo
 
+👉 **Demo Link:** https://job-portal-fjmy.onrender.com/
+
+👉 **Repository:** https://github.com/Pruthviraj75/job_portal
+
 👉 **Portfolio:** https://pruthviii.onrender.com/  
-👉 **Repository:** https://github.com/Pruthviraj75/job_portal  
 
 ---
 
 # 🎬 Demo Preview
-
-> Save your screen recording as `/screenshots/demo.gif`
+![Homepage](https://i.postimg.cc/RVj7RCLM/homepage.png)
+![Jobs](https://i.postimg.cc/1t2Gj915/jobs-page.png)
 
 <p align="center">
   <img src="screenshots/demo.gif" width="90%" />
