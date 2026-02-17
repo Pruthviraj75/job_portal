@@ -71,7 +71,11 @@ function App() {
       element: <ProtectedRoute><AdminJobs /></ProtectedRoute> 
     },
     {
-      path: '/admin/jobs/:id',
+       path:"/admin/jobs/create",
+       element:<ProtectedRoute><PostJob /></ProtectedRoute>
+    },
+    {
+      path: '/admin/jobs/edit/:id',
       element: <ProtectedRoute><PostJob /></ProtectedRoute> 
     },
     {

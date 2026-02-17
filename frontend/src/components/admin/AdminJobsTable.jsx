@@ -158,7 +158,7 @@ const AdminJobsTable = () => {
                   variant="ghost"
                   onClick={() => {
                     dispatch(setSingleJob(job));
-                    navigate(`/admin/jobs/${job._id}`);
+                    navigate(`/admin/jobs/edit/${job._id}`);
                   }}
                   className="hover:bg-gray-200 rounded-lg text-[#6A38C2]"
                 >

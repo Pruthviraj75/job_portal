@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 
 import AdminJobsTable from "./AdminJobsTable";
 import useGetAllAdminJobs from "../../hooks/useGetAllAdminJobs";
-import { setSearchJobByText } from "../../redux/jobSlice";
+import { clearSingleJob, setSearchJobByText } from "../../redux/jobSlice";
 
 const AdminJobs = () => {
   useGetAllAdminJobs();
@@ -25,7 +25,7 @@ const AdminJobs = () => {
       <Navbar />
 
       {/* main content */}
-      <div className="max-w-6xl mx-auto px-4 pt-20 pb-10">
+      <div className="max-w-6xl mx-auto px-4 pt-0 pb-10">
         {/* Header Section */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-800">Manage Jobs</h1>
@@ -45,7 +45,9 @@ const AdminJobs = () => {
             />
 
             <Button
-              onClick={() => navigate("/admin/jobs/create")}
+              onClick={() =>{ 
+                dispatch(clearSingleJob());
+                navigate("/admin/jobs/create")}}
               className="px-6"
             >
               + New Job
