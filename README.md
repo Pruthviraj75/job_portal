@@ -1,4 +1,4 @@
-<h1 align="center">💼 Job Portal – MERN Stack Application</h1>
+<h1 align="center">💼 JobConnect – MERN Stack Application</h1>
 
 <p align="center">
 A modern full-stack job portal where recruiters post jobs and candidates apply seamlessly.
