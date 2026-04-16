@@ -32,8 +32,12 @@ A modern full-stack job portal where recruiters post jobs and candidates apply s
 
 ---
 
-# 🎬 Demo Preview
+## 📸 Demo Preview
+
+### 🔹 Home Page
 ![Homepage](https://i.postimg.cc/RVj7RCLM/homepage.png)
+
+### 🔹 Jobs 
 ![Jobs](https://i.postimg.cc/1t2Gj915/jobs-page.png)
 
 <p align="center">
