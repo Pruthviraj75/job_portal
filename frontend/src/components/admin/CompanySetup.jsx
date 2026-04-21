@@ -1,3 +1,206 @@
+// import React, { useEffect, useState } from "react";
+// import Navbar from "../shared/Navbar";
+// import { Button } from "../ui/button";
+// import { ArrowLeft, Loader2 } from "lucide-react";
+// import { Label } from "../ui/label";
+// import { Input } from "../ui/input";
+// import axios from "axios";
+// import { COMPANY_API_ENDPOINT } from "../utils/constant";
+// import { useNavigate, useParams } from "react-router";
+// import { toast } from "sonner";
+// import { useSelector } from "react-redux";
+// import useGetCompanyById from "../../hooks/useGetCompanyById";
+
+// const CompanySetup = () => {
+//   const params = useParams();
+//   useGetCompanyById(params.id);
+
+//   const navigate = useNavigate();
+
+//   const { singleCompany } = useSelector((store) => store.company);
+
+//   const [loading, setLoading] = useState(false);
+
+//   const [input, setInput] = useState({
+//     name: "",
+//     description: "",
+//     website: "",
+//     location: "",
+//     file: null,
+//   });
+
+//   const changeEventHandler = (e) => {
+//     setInput({ ...input, [e.target.name]: e.target.value });
+//   };
+
+//   const changeFileHandler = (e) => {
+//     const file = e.target.files?.[0];
+//     setInput({ ...input, file });
+//   };
+
+//   const submitHandler = async (e) => {
+//     e.preventDefault();
+
+//     const formData = new FormData();
+//     formData.append("name", input.name);
+//     formData.append("description", input.description);
+//     formData.append("website", input.website);
+//     formData.append("location", input.location);
+
+//     if (input.file) formData.append("companyLogo", input.file);
+
+//     try {
+//       setLoading(true);
+
+//       const res = await axios.put(
+//         `${COMPANY_API_ENDPOINT}/update/${params.id}`,
+//         formData,
+//         { withCredentials: true }
+//       );
+
+//       if (res.data.success) {
+//         toast.success("Company updated successfully");
+//         navigate("/admin/companies");
+//       }
+//     } catch (error) {
+//       toast.error(
+//         error?.response?.data?.message || "Failed to update company"
+//       );
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   useEffect(() => {
+//     if (!singleCompany) return;
+
+//     setInput({
+//       name: singleCompany.name || "",
+//       description: singleCompany.description || "",
+//       website: singleCompany.website || "",
+//       location: singleCompany.location || "",
+//       file: null,
+//     });
+//   }, [singleCompany]);
+
+//   return (
+//     <div className="bg-gray-50 min-h-screen">
+//       <Navbar />
+
+//       <div className="max-w-4xl mx-auto px-4 py-20">
+//         {/* Card */}
+//         <div className="bg-white rounded-2xl shadow-md border p-8">
+//           {/* Header */}
+//           <div className="flex items-center gap-4 mb-8">
+//             <Button
+//               variant="outline"
+//               onClick={() => navigate("/admin/companies")}
+//               className="rounded-xl"
+//             >
+//               <ArrowLeft className="w-4 h-4 mr-2" />
+//               Back
+//             </Button>
+
+//             <div>
+//               <h1 className="text-2xl font-bold">Company Setup</h1>
+//               <p className="text-sm text-gray-500">
+//                 Update your company details and branding
+//               </p>
+//             </div>
+//           </div>
+
+//           {/* Form */}
+//           <form onSubmit={submitHandler} className="space-y-6">
+//             <div className="grid md:grid-cols-2 gap-6">
+//               <div>
+//                 <Label>Company Name</Label>
+//                 <Input
+//                   name="name"
+//                   value={input.name}
+//                   onChange={changeEventHandler}
+//                   placeholder="Microsoft"
+//                 />
+//               </div>
+
+//               <div>
+//                 <Label>Description</Label>
+//                 <Input
+//                   name="description"
+//                   value={input.description}
+//                   onChange={changeEventHandler}
+//                   placeholder="Software company"
+//                 />
+//               </div>
+
+//               <div>
+//                 <Label>Website</Label>
+//                 <Input
+//                   name="website"
+//                   value={input.website}
+//                   onChange={changeEventHandler}
+//                   placeholder="https://company.com"
+//                 />
+//               </div>
+
+//               <div>
+//                 <Label>Location</Label>
+//                 <Input
+//                   name="location"
+//                   value={input.location}
+//                   onChange={changeEventHandler}
+//                   placeholder="Mumbai, India"
+//                 />
+//               </div>
+//             </div>
+
+//             {/* Logo Upload */}
+//             <div className="space-y-3">
+//               <Label>Company Logo</Label>
+
+//               <div className="flex items-center gap-4">
+//                 {singleCompany?.logo && (
+//                   <img
+//                     src={singleCompany.logo}
+//                     alt="logo"
+//                     className="w-16 h-16 rounded-xl object-cover border"
+//                   />
+//                 )}
+
+//                 <Input
+//                   type="file"
+//                   name="companyLogo"
+//                   accept="image/*"
+//                   onChange={changeFileHandler}
+//                 />
+//               </div>
+//             </div>
+
+//             {/* Submit */}
+//             <Button
+//               type="submit"
+//               disabled={loading}
+//               className="w-full bg-[#7209b7] hover:bg-[#5f32ad] text-white rounded-xl"
+//             >
+//               {loading ? (
+//                 <>
+//                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+//                   Updating...
+//                 </>
+//               ) : (
+//                 "Update Company"
+//               )}
+//             </Button>
+//           </form>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default CompanySetup;
+
+
+
 import React, { useEffect, useState } from "react";
 import Navbar from "../shared/Navbar";
 import { Button } from "../ui/button";
@@ -18,7 +221,6 @@ const CompanySetup = () => {
   const navigate = useNavigate();
 
   const { singleCompany } = useSelector((store) => store.company);
-
   const [loading, setLoading] = useState(false);
 
   const [input, setInput] = useState({
@@ -46,7 +248,6 @@ const CompanySetup = () => {
     formData.append("description", input.description);
     formData.append("website", input.website);
     formData.append("location", input.location);
-
     if (input.file) formData.append("companyLogo", input.file);
 
     try {
@@ -63,9 +264,7 @@ const CompanySetup = () => {
         navigate("/admin/companies");
       }
     } catch (error) {
-      toast.error(
-        error?.response?.data?.message || "Failed to update company"
-      );
+      toast.error(error?.response?.data?.message || "Failed to update company");
     } finally {
       setLoading(false);
     }
@@ -73,7 +272,6 @@ const CompanySetup = () => {
 
   useEffect(() => {
     if (!singleCompany) return;
-
     setInput({
       name: singleCompany.name || "",
       description: singleCompany.description || "",
@@ -87,82 +285,92 @@ const CompanySetup = () => {
     <div className="bg-gray-50 min-h-screen">
       <Navbar />
 
-      <div className="max-w-4xl mx-auto px-4 py-20">
+      <div className="max-w-4xl mx-auto px-3 sm:px-5 lg:px-8 pt-20 sm:pt-24 lg:pt-28 pb-10">
+
         {/* Card */}
-        <div className="bg-white rounded-2xl shadow-md border p-8">
-          {/* Header */}
-          <div className="flex items-center gap-4 mb-8">
+        <div className="bg-white rounded-2xl shadow-md border p-5 sm:p-6 lg:p-8">
+
+          {/* Header — stack on mobile, row on sm+ */}
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mb-6 sm:mb-8">
             <Button
               variant="outline"
               onClick={() => navigate("/admin/companies")}
-              className="rounded-xl"
+              className="w-full sm:w-auto rounded-xl text-sm flex items-center gap-2"
             >
-              <ArrowLeft className="w-4 h-4 mr-2" />
+              <ArrowLeft className="w-4 h-4" />
               Back
             </Button>
 
             <div>
-              <h1 className="text-2xl font-bold">Company Setup</h1>
-              <p className="text-sm text-gray-500">
+              <h1 className="text-xl sm:text-2xl font-bold">Company Setup</h1>
+              <p className="text-xs sm:text-sm text-gray-500">
                 Update your company details and branding
               </p>
             </div>
           </div>
 
           {/* Form */}
-          <form onSubmit={submitHandler} className="space-y-6">
-            <div className="grid md:grid-cols-2 gap-6">
-              <div>
-                <Label>Company Name</Label>
+          <form onSubmit={submitHandler} className="space-y-5 sm:space-y-6">
+
+            {/* 2-col grid on md+, single col on mobile */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 lg:gap-6">
+
+              <div className="space-y-1.5">
+                <Label className="text-sm">Company Name</Label>
                 <Input
                   name="name"
                   value={input.name}
                   onChange={changeEventHandler}
                   placeholder="Microsoft"
+                  className="text-sm"
                 />
               </div>
 
-              <div>
-                <Label>Description</Label>
+              <div className="space-y-1.5">
+                <Label className="text-sm">Description</Label>
                 <Input
                   name="description"
                   value={input.description}
                   onChange={changeEventHandler}
                   placeholder="Software company"
+                  className="text-sm"
                 />
               </div>
 
-              <div>
-                <Label>Website</Label>
+              <div className="space-y-1.5">
+                <Label className="text-sm">Website</Label>
                 <Input
                   name="website"
                   value={input.website}
                   onChange={changeEventHandler}
                   placeholder="https://company.com"
+                  className="text-sm"
                 />
               </div>
 
-              <div>
-                <Label>Location</Label>
+              <div className="space-y-1.5">
+                <Label className="text-sm">Location</Label>
                 <Input
                   name="location"
                   value={input.location}
                   onChange={changeEventHandler}
                   placeholder="Mumbai, India"
+                  className="text-sm"
                 />
               </div>
+
             </div>
 
-            {/* Logo Upload */}
-            <div className="space-y-3">
-              <Label>Company Logo</Label>
+            {/* Logo Upload — stack on mobile, row on sm+ */}
+            <div className="space-y-2 sm:space-y-3">
+              <Label className="text-sm">Company Logo</Label>
 
-              <div className="flex items-center gap-4">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
                 {singleCompany?.logo && (
                   <img
                     src={singleCompany.logo}
                     alt="logo"
-                    className="w-16 h-16 rounded-xl object-cover border"
+                    className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl object-cover border shrink-0"
                   />
                 )}
 
@@ -171,6 +379,7 @@ const CompanySetup = () => {
                   name="companyLogo"
                   accept="image/*"
                   onChange={changeFileHandler}
+                  className="text-sm"
                 />
               </div>
             </div>
@@ -179,7 +388,7 @@ const CompanySetup = () => {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#7209b7] hover:bg-[#5f32ad] text-white rounded-xl"
+              className="w-full bg-[#7209b7] hover:bg-[#5f32ad] text-white rounded-xl text-sm h-10 sm:h-11"
             >
               {loading ? (
                 <>
@@ -190,6 +399,7 @@ const CompanySetup = () => {
                 "Update Company"
               )}
             </Button>
+
           </form>
         </div>
       </div>

@@ -1,3 +1,66 @@
+// import React, { useEffect } from "react";
+// import Navbar from "../shared/Navbar";
+// import ApplicantsTable from "./ApplicantsTable";
+// import axios from "axios";
+// import { APPLICATION_API_ENDPOINT } from "../utils/constant";
+// import { useParams } from "react-router";
+// import { useDispatch, useSelector } from "react-redux";
+// import { setAllApplicants } from "../../redux/applicationSlice";
+
+// const Applicants = () => {
+//   const { id } = useParams();
+//   const dispatch = useDispatch();
+//   const { applicants } = useSelector((store) => store.application);
+
+//   /* ---------------- FETCH ---------------- */
+//   useEffect(() => {
+//     const fetchAllApplicants = async () => {
+//       try {
+//         const res = await axios.get(
+//           `${APPLICATION_API_ENDPOINT}/${id}/applicants`,
+//           { withCredentials: true }
+//         );
+
+//         if (res.data.success) {
+//           dispatch(setAllApplicants(res.data.job.applications));
+//         }
+//       } catch (error) {
+//         console.log(error);
+//       }
+//     };
+
+//     fetchAllApplicants();
+//   }, [id, dispatch]); // important fix
+
+//   /* ---------------- UI ---------------- */
+//   return (
+//     <div className="min-h-screen bg-gray-50">
+//       <Navbar />
+
+//       <div className="max-w-7xl mx-auto px-4 py-20">
+
+//         {/* Header Card */}
+//         <div className="bg-white rounded-2xl shadow-sm border p-6 mb-6">
+//           <h1 className="text-xl font-semibold">
+//             Applicants
+//             <span className="text-gray-500 ml-2">
+//               ({applicants?.length || 0})
+//             </span>
+//           </h1>
+//         </div>
+
+//         {/* Table/Card List */}
+//         <ApplicantsTable />
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Applicants;
+
+
+
+
 import React, { useEffect } from "react";
 import Navbar from "../shared/Navbar";
 import ApplicantsTable from "./ApplicantsTable";
@@ -20,7 +83,6 @@ const Applicants = () => {
           `${APPLICATION_API_ENDPOINT}/${id}/applicants`,
           { withCredentials: true }
         );
-
         if (res.data.success) {
           dispatch(setAllApplicants(res.data.job.applications));
         }
@@ -28,22 +90,21 @@ const Applicants = () => {
         console.log(error);
       }
     };
-
     fetchAllApplicants();
-  }, [id, dispatch]); // important fix
+  }, [id, dispatch]);
 
   /* ---------------- UI ---------------- */
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
 
-      <div className="max-w-7xl mx-auto px-4 py-20">
+      <div className="max-w-7xl mx-auto px-3 sm:px-5 lg:px-8 pt-20 sm:pt-24 lg:pt-28 pb-10 space-y-4 sm:space-y-6">
 
         {/* Header Card */}
-        <div className="bg-white rounded-2xl shadow-sm border p-6 mb-6">
-          <h1 className="text-xl font-semibold">
+        <div className="bg-white rounded-2xl shadow-sm border p-4 sm:p-5 lg:p-6">
+          <h1 className="text-lg sm:text-xl font-semibold">
             Applicants
-            <span className="text-gray-500 ml-2">
+            <span className="text-gray-500 ml-2 text-base sm:text-lg">
               ({applicants?.length || 0})
             </span>
           </h1>
@@ -51,6 +112,7 @@ const Applicants = () => {
 
         {/* Table/Card List */}
         <ApplicantsTable />
+
       </div>
     </div>
   );
