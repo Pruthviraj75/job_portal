@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React, { useEffect } from 'react'
 import { SAVED_JOBS_API_ENDPOINT } from '../components/utils/constant'
-import { toast } from 'sonner'
+// import { toast } from 'sonner'
 import { useDispatch } from 'react-redux'
 import { setSavedJobs } from '../redux/savedJobSlice'
 

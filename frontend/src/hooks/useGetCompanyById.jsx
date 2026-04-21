@@ -1,8 +1,8 @@
 import axios from "axios";
 import React, { useEffect } from "react";
 import { COMPANY_API_ENDPOINT } from "../components/utils/constant";
-import { useParams } from "react-router";
-import { toast } from "sonner";
+// import { useParams } from "react-router";
+// import { toast } from "sonner";
 import { useDispatch } from "react-redux";
 import { setSingleCompany } from "../redux/companySlice";
 
@@ -27,7 +27,11 @@ const useGetCompanyById = (companyId) => {
         //   toast.success(res.data.message);
         // }
         if (res?.data?.success) {
-  dispatch(setSingleCompany(...));
+  dispatch(setSingleCompany({
+              ...res.data.company,
+              jobsCount: res.data.jobsCount,
+              applicantsCount: res.data.applicantsCount,
+            }),);
 } else {
   dispatch(setSingleCompany(null));
 }
@@ -35,11 +39,11 @@ const useGetCompanyById = (companyId) => {
       // catch (error) {
       //   console.log(error);
       // }
-
 catch (error) {
   console.log(error);
   dispatch(setSingleCompany(null)); // ✅ ADD
 }
+
     };
     fetchSingleCompany();
   }, [companyId, dispatch]);
