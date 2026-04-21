@@ -97,9 +97,12 @@ export const login = async (req, res) => {
       .status(200)
       .cookie("token", token, {
         maxAge: 1 * 24 * 60 * 60 * 1000,
-        secure: process.env.NODE_ENV === "production",
-        httpsOnly: true,
-        sameSite: "strict",
+        // secure: process.env.NODE_ENV === "production",
+        secure: true,
+        // httpsOnly: true,
+        httpOnly: true,
+        // sameSite: "strict",
+        sameSite: "none",
       })
       .json({
         message: `welcome back ${user.fullname}`,
@@ -107,8 +110,12 @@ export const login = async (req, res) => {
         success: true,
       });
   } catch (error) {
-    console.log(error);
-  }
+  console.log(error);
+  return res.status(500).json({
+    message: "Server error",
+    success: false,
+  });
+}
 };
 
 export const logout = async (req, res) => {

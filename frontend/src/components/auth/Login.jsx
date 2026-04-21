@@ -164,6 +164,12 @@ const Login = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+
+     if (!input.role) {
+    toast.error("Please select a role");
+    return;
+  }
+  
     try {
       dispatch(setLoading(true));
       const res = await axios.post(
@@ -175,7 +181,7 @@ const Login = () => {
         }
       );
 
-      if (res.data.success) {
+      if (res?.data?.success) {
         dispatch(setUser(res.data.user));
         toast.success(res.data.message);
       }
