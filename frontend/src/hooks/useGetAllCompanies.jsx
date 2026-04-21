@@ -11,12 +11,22 @@ const useGetAllCompanies = () => {
      const fetchCompanies = async () => {
         try {
             const res = await axios.get(`${COMPANY_API_ENDPOINT}/get`, {withCredentials:true});
-            if(res.data.success){
-               dispatch(setCompanies(res.data.companies));
-            }
-        } catch (error) {
-            console.log(error);
-        }
+            // if(res.data.success){
+            //    dispatch(setCompanies(res.data.companies));
+            // }
+            if (res?.data?.success) {
+  dispatch(setCompanies(res.data.companies));
+} else {
+  dispatch(setCompanies([]));
+}
+        } 
+      //   catch (error) {
+      //       console.log(error);
+      //   }
+      catch (error) {
+  console.log(error);
+  dispatch(setCompanies([])); // ✅ ADD
+}
      }
      fetchCompanies();
   }, [])

@@ -16,19 +16,30 @@ const useGetCompanyById = (companyId) => {
           `${COMPANY_API_ENDPOINT}/get/${companyId}`,
           { withCredentials: true },
         );
-        if (res.data.success) {
-          dispatch(
-            setSingleCompany({
-              ...res.data.company,
-              jobsCount: res.data.jobsCount,
-              applicantsCount: res.data.applicantsCount,
-            }),
-          );
-          toast.success(res.data.message);
-        }
-      } catch (error) {
-        console.log(error);
-      }
+        // if (res.data.success) {
+        //   dispatch(
+        //     setSingleCompany({
+        //       ...res.data.company,
+        //       jobsCount: res.data.jobsCount,
+        //       applicantsCount: res.data.applicantsCount,
+        //     }),
+        //   );
+        //   toast.success(res.data.message);
+        // }
+        if (res?.data?.success) {
+  dispatch(setSingleCompany(...));
+} else {
+  dispatch(setSingleCompany(null));
+}
+      } 
+      // catch (error) {
+      //   console.log(error);
+      // }
+
+catch (error) {
+  console.log(error);
+  dispatch(setSingleCompany(null)); // ✅ ADD
+}
     };
     fetchSingleCompany();
   }, [companyId, dispatch]);

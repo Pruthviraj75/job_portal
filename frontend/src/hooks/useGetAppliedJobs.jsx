@@ -10,13 +10,22 @@ const useGetAppliedJobs = () => {
     const fetchAllAppliedJobs = async () => {
         try {
             const res = await axios.get(`${APPLICATION_API_ENDPOINT}/get`,{withCredentials:true});
-            if(res.data.success){
-                dispatch(setAllAppliedJobs(res.data.application))
-            }
-        } catch (error) {
-            console.log(error);
-            
-        }
+            // if(res.data.success){
+            //     dispatch(setAllAppliedJobs(res.data.application))
+            // }
+            if (res?.data?.success) {
+  dispatch(setAllAppliedJobs(res.data.application));
+} else {
+  dispatch(setAllAppliedJobs([]));
+}
+        } 
+        // catch (error) {
+        //     console.log(error);
+        // }
+        catch (error) {
+  console.log(error);
+  dispatch(setAllAppliedJobs([])); // ✅ ADD
+}
     } 
     fetchAllAppliedJobs();
   }, [])

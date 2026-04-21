@@ -11,10 +11,20 @@ const useGetSavedJobs = () => {
     const fetchSavedJobs = async () => {
         try {
             const res = await axios.get(`${SAVED_JOBS_API_ENDPOINT}/get`,{withCredentials:true});
-            dispatch(setSavedJobs(res.data.jobs))
-        } catch (error) {
-            console.log(error);
-        }
+            // dispatch(setSavedJobs(res.data.jobs))
+            if (res?.data?.success) {
+  dispatch(setSavedJobs(res.data.jobs));
+} else {
+  dispatch(setSavedJobs([]));
+}
+        } 
+        // catch (error) {
+        //     console.log(error);
+        // }
+        catch (error) {
+  console.log(error);
+  dispatch(setSavedJobs([])); // ✅ ADD
+}
     }
     fetchSavedJobs();
   }, [])
