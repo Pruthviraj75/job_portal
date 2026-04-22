@@ -11,23 +11,15 @@ const useGetJobById = (jobId) => {
     const fetchJob = async () => {
       try {
         const res = await axios.get(`${Job_API_ENDPOINT}/${jobId}`);
-
-        // if (res.data.success) {
-        //   dispatch(setSingleJob(res.data.job));
-        // }
         if (res?.data?.success) {
-  dispatch(setSingleJob(res.data.job));
-} else {
-  dispatch(setSingleJob(null));
-}
-      } 
-      // catch (error) {
-      //   console.log(error);
-      // }
-      catch (error) {
-  console.log(error);
-  dispatch(setSingleJob(null)); // ✅ ADD
-}
+          dispatch(setSingleJob(res.data.job));
+        } else {
+          dispatch(setSingleJob(null));
+        }
+      } catch (error) {
+        console.log(error);
+        dispatch(setSingleJob(null)); //  ADD
+      }
     };
 
     if (jobId) fetchJob();

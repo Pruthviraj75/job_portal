@@ -9,23 +9,19 @@ const useGetAllAdminJobs = () => {
   useEffect(() => {
     const fetchAllAdminJobs = async () => {
       try {
-        const res = await axios.get(`${Job_API_ENDPOINT}/getadminjobs`, { withCredentials: true });
-        // if (res.data.success) {
-        //   dispatch(setAllAdminJobs(res.data.jobs));
-        // }
+        const res = await axios.get(`${Job_API_ENDPOINT}/getadminjobs`, {
+          withCredentials: true,
+        });
+
         if (res?.data?.success) {
-  dispatch(setAllAdminJobs(res.data.jobs));
-} else {
-  dispatch(setAllAdminJobs([]));
-}
-      } 
-      // catch (error) {
-      //   console.log(error);
-      // }
-      catch (error) {
-  console.log(error);
-  dispatch(setAllAdminJobs([])); // ✅ ADD THIS
-}
+          dispatch(setAllAdminJobs(res.data.jobs));
+        } else {
+          dispatch(setAllAdminJobs([]));
+        }
+      } catch (error) {
+        console.log(error);
+        dispatch(setAllAdminJobs([])); // fallback in case of error
+      }
     };
     fetchAllAdminJobs();
   }, []);

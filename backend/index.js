@@ -65,7 +65,7 @@ import applicationsRoute from './routes/application.route.js';
 import savedJobRoutes from './routes/savedJob.route.js';
 import path from 'path';
 
-// ✅ NEW IMPORTS (for cleanup)
+//  NEW IMPORTS (for cleanup)
 import { Application } from './models/application.model.js';
 import { Job } from './models/job.model.js';
 
@@ -106,7 +106,7 @@ app.get(/.*/, (_, res) => {
 });
 
 
-// ✅ CLEANUP FUNCTION (VERY IMPORTANT)
+// CLEANUP FUNCTION (VERY IMPORTANT)
 const cleanOrphanApplications = async () => {
   try {
     const jobs = await Job.find().select("_id");
@@ -116,14 +116,14 @@ const cleanOrphanApplications = async () => {
       job: { $nin: jobIds }
     });
 
-    console.log(`✅ Cleaned ${result.deletedCount} orphan applications`);
+    console.log(` Cleaned ${result.deletedCount} orphan applications`);
   } catch (error) {
     console.log(error);
   }
 };
 
 
-// ✅ RUN SERVER + CLEANUP
+// RUN SERVER + CLEANUP
 app.listen(PORT, async () => {
   console.log(`Server listening at port ${PORT}`);
 
